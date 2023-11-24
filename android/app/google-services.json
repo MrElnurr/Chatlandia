@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "246092339827",
+    "project_id": "chatlandiav2",
+    "storage_bucket": "chatlandiav2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246092339827:android:1f19b4b9de2e80ffe02806",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGN_R0ZnWFkI3YY3wYm2HJKS_kgzpbf6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
