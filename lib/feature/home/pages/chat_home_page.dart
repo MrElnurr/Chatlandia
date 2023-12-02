@@ -42,6 +42,7 @@ class ChatHomePage extends ConsumerWidget {
                       active: true,
                       phoneNumber: lastMessageData.contactId,
                       groupId: [],
+                      pushToken: lastMessageData.contactId,
                     ),
                   );
                 },

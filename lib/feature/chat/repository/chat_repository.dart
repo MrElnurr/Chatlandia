@@ -125,6 +125,7 @@ class ChatRepository {
             contactId: lastMessage.contactId,
             timeSent: lastMessage.timeSent,
             lastMessage: lastMessage.lastMessage,
+            pushToken: user.pushToken,
           ),
         );
       }
@@ -220,6 +221,7 @@ class ChatRepository {
       contactId: senderUserData.uid,
       timeSent: timeSent,
       lastMessage: lastMessage,
+      pushToken: '',
     );
 
     await firestore
@@ -235,6 +237,7 @@ class ChatRepository {
       contactId: receiverUserData.uid,
       timeSent: timeSent,
       lastMessage: lastMessage,
+      pushToken: '',
     );
 
     await firestore

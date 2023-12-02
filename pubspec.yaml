@@ -48,17 +48,21 @@ dependencies:
   url_launcher: ^6.2.1
   page_transition: ^2.1.0
   cached_network_image: ^3.3.0
-  uuid: ^4.2.1
-  intl: ^0.18.1
+  uuid: ^3.0.7
+  intl: ^0.17.0
   custom_clippers: ^2.0.0
   shimmer: ^3.0.0
-  zego_zimkit: ^1.9.0
   flutter_phone_direct_caller: ^2.1.1
   firebase_messaging: ^14.7.5
   liquid_swipe: ^3.1.0
-  file_picker: ^5.5.0
+  file_picker: ^6.1.1
   camera: ^0.10.5+5
-  permission_handler: ^10.4.5
+  permission_handler: ^11.0.1
+  awesome_notifications: ^0.6.21
+  zego_uikit_prebuilt_call: ^3.17.9
+  http: ^0.13.6
+  zego_express_engine: ^3.10.3
+  zego_uikit_signaling_plugin: ^2.6.7
 
 flutter_native_splash:
   color: "#FFFFFF"

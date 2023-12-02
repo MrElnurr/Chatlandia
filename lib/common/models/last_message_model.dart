@@ -11,6 +11,7 @@ class LastMessageModel {
     required this.contactId,
     required this.timeSent,
     required this.lastMessage,
+    required String pushToken,
   });
 
   Map<String, dynamic> toMap() {

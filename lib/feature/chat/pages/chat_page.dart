@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatapp/call_screen.dart';
 import 'package:chatapp/common/extension/custom_theme_extension.dart';
 import 'package:chatapp/common/models/user_model.dart';
 import 'package:chatapp/common/routes/routes.dart';
@@ -9,6 +10,7 @@ import 'package:chatapp/feature/chat/widgets/chat_text_field.dart';
 import 'package:chatapp/feature/chat/controllers/chat_controller.dart';
 import 'package:chatapp/feature/chat/widgets/message_card.dart';
 import 'package:chatapp/feature/chat/widgets/show_date_card.dart';
+import 'package:chatapp/main.dart';
 import 'package:custom_clippers/custom_clippers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,11 +80,18 @@ class ChatPage extends ConsumerWidget {
           ),
         ),
         actions: [
-          // CustomIconButton(
-          //   onTap: () {},
-          //   icon: Icons.video_call,
-          //   iconColor: Colors.white,
-          // ),
+          CustomIconButton(
+            onTap: () {
+              var callID = generateUniqueCallID();
+              sendPushNotification(user, '', callID, true);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (_) => CallPageNew(callID: callID, isVideo: true)),
+              );
+            },
+            icon: Icons.video_call,
+            iconColor: Colors.white,
+          ),
           CustomIconButton(
             onTap: () {
               FlutterPhoneDirectCaller.callNumber(user.phoneNumber);

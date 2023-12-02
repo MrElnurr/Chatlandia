@@ -44,6 +44,7 @@ class ContactsRepository {
                 active: false,
                 phoneNumber: contact.phones[0].number.replaceAll(' ', ''),
                 groupId: [],
+                pushToken: '',
               ),
             );
           }

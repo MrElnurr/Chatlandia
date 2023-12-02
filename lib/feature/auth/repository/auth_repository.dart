@@ -5,6 +5,7 @@ import 'package:chatapp/common/repository/firebase_storage_repository.dart';
 import 'package:chatapp/common/routes/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +50,6 @@ class AuthRepository {
             .read(FirebaseStorageRepositoryProvider)
             .storeFiletoFirebase('profileImage/$uid', profileImage);
       }
-
       UserModel user = UserModel(
         username: username,
         uid: uid,
@@ -57,8 +57,15 @@ class AuthRepository {
         active: true,
         phoneNumber: auth.currentUser!.phoneNumber!,
         groupId: [],
+        pushToken: '',
       );
-
+      FirebaseMessaging fMessaging = FirebaseMessaging.instance;
+      await fMessaging.requestPermission(provisional: true);
+      await fMessaging.getToken().then((t) {
+        if (t != null) {
+          user.pushToken = t;
+        }
+      });
       await firestore.collection('users').doc(uid).set(user.toMap());
 
       if (!mounted) return;
