@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:chatapp/common/enum/message_type.dart';
 import 'package:chatapp/common/helper/show_alert_dialogue.dart';
 import 'package:chatapp/common/models/last_message_model.dart';
@@ -125,7 +127,7 @@ class ChatRepository {
             contactId: lastMessage.contactId,
             timeSent: lastMessage.timeSent,
             lastMessage: lastMessage.lastMessage,
-            pushToken: user.pushToken,
+            push_token: user.push_token,
           ),
         );
       }
@@ -221,7 +223,7 @@ class ChatRepository {
       contactId: senderUserData.uid,
       timeSent: timeSent,
       lastMessage: lastMessage,
-      pushToken: '',
+      push_token: '',
     );
 
     await firestore
@@ -237,7 +239,7 @@ class ChatRepository {
       contactId: receiverUserData.uid,
       timeSent: timeSent,
       lastMessage: lastMessage,
-      pushToken: '',
+      push_token: '',
     );
 
     await firestore

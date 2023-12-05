@@ -1,10 +1,83 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:chatapp/call_screen.dart';
 import 'package:chatapp/feature/home/pages/call_home_page.dart';
 import 'package:chatapp/feature/home/pages/chat_home_page.dart';
 import 'package:chatapp/feature/welcome/widgets/random_emoji.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      dynamic callID = message.data['id'];
+      dynamic isVideo = message.data['isVideo'];
+      debugPrint('---------------------isVideo---------------');
+      debugPrint(isVideo);
+      String? title = message.notification!.title;
+      String? body = message.notification!.body;
+
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 123,
+              channelKey: "chats",
+              color: Colors.white,
+              title: title,
+              body: body,
+              category: callID != ''
+                  ? NotificationCategory.Call
+                  : NotificationCategory.Message,
+              wakeUpScreen: true,
+              fullScreenIntent: true,
+              autoDismissible: true,
+              backgroundColor: Colors.orange),
+          actionButtons: callID != ''
+              ? [
+                  NotificationActionButton(
+                    key: "ACCEPT",
+                    label: "Accept Call",
+                    color: Colors.green,
+                    autoDismissible: true,
+                  ),
+                  NotificationActionButton(
+                    key: "REJECT",
+                    label: "Reject Call",
+                    color: Colors.red,
+                    autoDismissible: true,
+                  ),
+                ]
+              : null);
+
+      AwesomeNotifications().actionStream.listen((event) {
+        if (event.buttonKeyPressed == "REJECT") {
+          debugPrint("$callID Call Rejected");
+        } else if (event.buttonKeyPressed == "ACCEPT") {
+          debugPrint("$callID Call Accepted");
+          debugPrint("isVideo: $isVideo");
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    CallPageNew(callID: callID, isVideo: true)),
+          );
+        } else {
+          debugPrint("Clicked on notification");
+        }
+      });
+
+      if (message.notification != null) {
+        debugPrint(
+            'Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

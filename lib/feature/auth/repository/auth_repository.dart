@@ -57,13 +57,13 @@ class AuthRepository {
         active: true,
         phoneNumber: auth.currentUser!.phoneNumber!,
         groupId: [],
-        pushToken: '',
+        push_token: '',
       );
       FirebaseMessaging fMessaging = FirebaseMessaging.instance;
       await fMessaging.requestPermission(provisional: true);
       await fMessaging.getToken().then((t) {
         if (t != null) {
-          user.pushToken = t;
+          user.push_token = t;
         }
       });
       await firestore.collection('users').doc(uid).set(user.toMap());

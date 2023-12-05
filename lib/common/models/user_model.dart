@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class UserModel {
   final String username;
   final String uid;
@@ -5,7 +7,7 @@ class UserModel {
   final bool active;
   final String phoneNumber;
   final List<String> groupId;
-  late String pushToken;
+  late String push_token;
 
   UserModel({
     required this.username,
@@ -14,7 +16,7 @@ class UserModel {
     required this.active,
     required this.phoneNumber,
     required this.groupId,
-    required this.pushToken,
+    required this.push_token,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +27,7 @@ class UserModel {
       'active': active,
       'phoneNumber': phoneNumber,
       'groupId': groupId,
-      'push_token': pushToken,
+      'push_token': push_token,
     };
   }
 
@@ -37,6 +39,6 @@ class UserModel {
         active: map['active'] ?? false,
         phoneNumber: map['phoneNumber'] ?? '',
         groupId: List<String>.from(map['groupId']),
-        pushToken: map['push_token'] ?? '');
+        push_token: map['push_token'] ?? '');
   }
 }

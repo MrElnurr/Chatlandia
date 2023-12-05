@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:chatapp/call_screen.dart';
 import 'package:chatapp/common/models/user_model.dart';
 import 'package:chatapp/common/routes/routes.dart';
 import 'package:chatapp/common/theme/dark_theme.dart';
@@ -24,9 +23,12 @@ import 'package:liquid_swipe/liquid_swipe.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await _initializeFirebase();
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -39,66 +41,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      dynamic callID = message.data['id'];
-      dynamic isVideo = message.data['isVideo'];
-      debugPrint('---------------------isVideo---------------');
-      debugPrint(isVideo);
-      String? title = message.notification!.title;
-      String? body = message.notification!.body;
-
-      AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 123,
-              channelKey: "chats",
-              color: Colors.white,
-              title: title,
-              body: body,
-              category: callID != ''
-                  ? NotificationCategory.Call
-                  : NotificationCategory.Message,
-              wakeUpScreen: true,
-              fullScreenIntent: true,
-              autoDismissible: true,
-              backgroundColor: Colors.orange),
-          actionButtons: callID != ''
-              ? [
-                  NotificationActionButton(
-                    key: "ACCEPT",
-                    label: "Accept Call",
-                    color: Colors.green,
-                    autoDismissible: true,
-                  ),
-                  NotificationActionButton(
-                    key: "REJECT",
-                    label: "Reject Call",
-                    color: Colors.red,
-                    autoDismissible: true,
-                  ),
-                ]
-              : null);
-
-      AwesomeNotifications().actionStream.listen((event) {
-        if (event.buttonKeyPressed == "REJECT") {
-          debugPrint("$callID Call Rejected");
-        } else if (event.buttonKeyPressed == "ACCEPT") {
-          debugPrint("$callID Call Accepted");
-          debugPrint("isVideo: $isVideo");
-          Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (_) => CallPageNew(
-                    callID: callID, isVideo: isVideo.toLowerCase() != "false")),
-          );
-        } else {
-          debugPrint("Clicked on notification");
-        }
-      });
-
-      if (message.notification != null) {
-        debugPrint(
-            'Message also contained a notification: ${message.notification}');
-      }
-    });
     return MaterialApp(
       theme: lightTheme(),
       darkTheme: darkTheme(),
@@ -183,7 +125,10 @@ _initializeFirebase() async {
     ],
   );
 
-  FirebaseMessaging.onBackgroundMessage(BackgroundHandler);
+  // ... (existing code)
+
+  FirebaseMessaging.onBackgroundMessage(
+      (message) => BackgroundHandler(message));
 }
 
 // ignore: non_constant_identifier_names
@@ -231,21 +176,17 @@ Future<void> BackgroundHandler(RemoteMessage message) async {
       debugPrint("Clicked on notification");
     }
   });
-  if (message.notification != null) {
-    debugPrint(
-        'Message also contained a notification: ${message.notification}');
-  }
 }
 
 // for sending push notification
 Future<void> sendPushNotification(
     UserModel user, String msg, String callID, bool isVideo) async {
-  debugPrint('usertoken: ${user.pushToken}');
+  debugPrint('usertoken: ${user.push_token}');
   try {
     final body = {
-      "to": user.pushToken,
+      "to": user.push_token,
       "notification": {
-        "title": user.username,
+        "title": 'ddd',
         "body": msg,
         "android_channel_id": "chats"
       },
